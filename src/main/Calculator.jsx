@@ -1,25 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Calculator.css';
 
 import Button from '../components/Button'
 import Display from '../components/Display'
 
+const initialState = {
+    displayValue: '0',
+    clearDisplay: false,
+    operation: null,
+    values: [0, 0],
+    currentIndex: 0
+};
+
 function Calculator(props) {
+    const [memory, setMemory] = useState(initialState);
+
     function clearMemory() {
-        console.log('limpar')
+        setMemory(initialState);
     }
 
     function setOperation(operation) {
-        console.log(operation)
+        console.log(operation);
     }
 
     function addDigit(digit) {
-        console.log(digit)
+        if (digit === '.' && memory.displayValue.includes('.')) {
+            return
+        }
+
+        const clearDisplay = memory.displayValue === '0' || memory.clearDisplay
+        const currentValue = clearDisplay ? '' : memory.displayValue
+        const displayValue = currentValue + digit
+        setMemory({ displayValue, clearDisplay: false })
     }
     
     return (
         <div className="calculator">
-            <Display value={0} />
+            <Display value={memory.displayValue} />
             <Button click={clearMemory} label="AC" />
             <Button click={setOperation} label="±" />
             <Button click={setOperation} label="%" />
