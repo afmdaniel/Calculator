@@ -25,13 +25,21 @@ function Calculator(props) {
 
     function addDigit(digit) {
         if (digit === '.' && memory.displayValue.includes('.')) {
-            return
+            return;
         }
 
-        const clearDisplay = memory.displayValue === '0' || memory.clearDisplay
-        const currentValue = clearDisplay ? '' : memory.displayValue
-        const displayValue = currentValue + digit
-        setMemory({ displayValue, clearDisplay: false })
+        const clearDisplay = memory.displayValue === '0' || memory.clearDisplay;
+        const currentValue = clearDisplay ? '' : memory.displayValue;
+        const displayValue = currentValue + digit;
+        
+        const values = [...memory.values]
+        if (digit !== '.') {
+            const i = memory.currentIndex;
+            const newValue = parseFloat(displayValue)
+            values[i] = newValue
+        }
+        
+        setMemory({ ...memory, values, displayValue, clearDisplay: false });
     }
     
     return (
