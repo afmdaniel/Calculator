@@ -5,28 +5,40 @@ import Button from '../components/Button'
 import Display from '../components/Display'
 
 function Calculator(props) {
+    function clearMemory() {
+        console.log('limpar')
+    }
+
+    function setOperation(operation) {
+        console.log(operation)
+    }
+
+    function addDigit(digit) {
+        console.log(digit)
+    }
+    
     return (
         <div className="calculator">
             <Display value={0} />
-            <Button label="AC" />
-            <Button label="±" />
-            <Button label="%" />
-            <Button className="operation" label="÷" />
-            <Button label="7" />
-            <Button label="8" />
-            <Button label="9" />
-            <Button className="operation" label="x" />
-            <Button label="4" />
-            <Button label="5" />
-            <Button label="6" />
-            <Button className="operation" label="-" />
-            <Button label="1" />
-            <Button label="2" />
-            <Button label="3" />
-            <Button className="operation" label="+" />
-            <Button className="double" label="0" />
-            <Button label="." />
-            <Button className="operation" label="=" />
+            <Button click={clearMemory} label="AC" />
+            <Button click={setOperation} label="±" />
+            <Button click={setOperation} label="%" />
+            <Button className="operation" click={setOperation} label="÷" />
+            <Button click={addDigit} label="7" />
+            <Button click={addDigit} label="8" />
+            <Button click={addDigit} label="9" />
+            <Button className="operation" click={setOperation} label="x" />
+            <Button click={addDigit} label="4" />
+            <Button click={addDigit} label="5" />
+            <Button click={addDigit} label="6" />
+            <Button className="operation" click={setOperation} label="-" />
+            <Button click={addDigit} label="1" />
+            <Button click={addDigit} label="2" />
+            <Button click={addDigit} label="3" />
+            <Button className="operation" click={setOperation} label="+" />
+            <Button className="double" click={addDigit} label="0" />
+            <Button click={addDigit} label="." />
+            <Button className="operation" click={setOperation} label="=" />
         </div>
     )
 }
