@@ -22,7 +22,6 @@ function Calculator(props) {
     function setOperation(operation) {
         let operationResolved = false;
         const values = [ ...memory.values ];
-        console.log(values)
         if (memory.currentIndex !== 0) {
             const currentOperation = memory.operation;
             
@@ -48,7 +47,6 @@ function Calculator(props) {
             
             operationResolved = operation === '=';
             values[1] = 0
-            console.log(values)
         }
             
         setMemory({ 
@@ -69,12 +67,19 @@ function Calculator(props) {
         let currentValue;
         let displayValue;
         
-        if (digit === "±" && memory.displayValue !== "0") {
+        if (digit === "±") {
             currentValue = memory.displayValue;
             displayValue = currentValue.indexOf('-') === -1 ? "-" + currentValue : currentValue.replace('-','');
         } else {
-            const clearDisplay = memory.displayValue === '0' || memory.clearDisplay;
-            currentValue = clearDisplay ? '' : memory.displayValue;
+            const regex = /-?0/;
+            const clearDisplay = regex.test(memory.displayValue) || memory.clearDisplay;
+            
+            if (memory.displayValue.indexOf('-') !== -1 && !memory.clearDisplay) {
+                currentValue = clearDisplay ? '-' : memory.displayValue;
+            } else {
+                currentValue = clearDisplay ? '' : memory.displayValue;
+            }
+
             displayValue = currentValue + digit;
         }
         
