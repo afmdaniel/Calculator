@@ -32,6 +32,7 @@ function Calculator(props) {
                     break;
                 case "÷":
                     values[0] /= values[1];
+                    values[0] = parseFloat(values[0].toFixed(3))
                     break;
                 case "x":
                     values[0] *= values[1];
