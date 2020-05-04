@@ -20,7 +20,43 @@ function Calculator(props) {
     }
 
     function setOperation(operation) {
-        console.log(operation);
+        let operationResolved = false;
+        const values = [ ...memory.values ];
+        console.log(values)
+        if (memory.currentIndex !== 0) {
+            const currentOperation = memory.operation;
+            
+            switch(currentOperation) {
+                case "%":
+                    values[0] *= values[1] / 100;
+                    break;
+                case "÷":
+                    values[0] /= values[1];
+                    break;
+                case "x":
+                    values[0] *= values[1];
+                    break;
+                case "+":
+                    values[0] += values[1];
+                    break;
+                case "-":
+                    values[0] -= values[1];
+                    break;
+                default:
+            }
+            
+            operationResolved = operation === '=';
+            values[1] = 0
+            console.log(values)
+        }
+            
+        setMemory({ 
+            displayValue: values[0].toString(),
+            clearDisplay: true,
+            operation: operationResolved ? null : operation,
+            values,
+            currentIndex: operationResolved ? 0 : 1
+        });
     }
 
     function addDigit(digit) {
@@ -28,15 +64,23 @@ function Calculator(props) {
             return;
         }
 
-        const clearDisplay = memory.displayValue === '0' || memory.clearDisplay;
-        const currentValue = clearDisplay ? '' : memory.displayValue;
-        const displayValue = currentValue + digit;
+        const values = [...memory.values];
+        let currentValue;
+        let displayValue;
         
-        const values = [...memory.values]
+        if (digit === "±" && memory.displayValue !== "0") {
+            currentValue = memory.displayValue;
+            displayValue = currentValue.indexOf('-') === -1 ? "-" + currentValue : currentValue.replace('-','');
+        } else {
+            const clearDisplay = memory.displayValue === '0' || memory.clearDisplay;
+            currentValue = clearDisplay ? '' : memory.displayValue;
+            displayValue = currentValue + digit;
+        }
+        
         if (digit !== '.') {
             const i = memory.currentIndex;
-            const newValue = parseFloat(displayValue)
-            values[i] = newValue
+            const newValue = parseFloat(displayValue);
+            values[i] = newValue;
         }
         
         setMemory({ ...memory, values, displayValue, clearDisplay: false });
@@ -46,7 +90,7 @@ function Calculator(props) {
         <div className="calculator">
             <Display value={memory.displayValue} />
             <Button click={clearMemory} label="AC" />
-            <Button click={setOperation} label="±" />
+            <Button click={addDigit} label="±" />
             <Button click={setOperation} label="%" />
             <Button className="operation" click={setOperation} label="÷" />
             <Button click={addDigit} label="7" />
